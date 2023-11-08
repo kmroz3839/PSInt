@@ -1,0 +1,30 @@
+{
+	"name": "R6S",
+	"hasPlayerURL": true,
+	"nDataFields": 3,
+	"data1": {
+		"dataName": "rank",
+		"rangeMin": 0,
+		"rangeMax": 5000
+	},
+	"data2": {
+		"dataName": "role",
+		"rangeMin": 0,
+		"rangeMax": 2,
+		"enumFields": {
+			"0": "Roamer",
+			"1": "Defender",
+			"2": "Technical"
+		}
+	},
+	"data3": {
+		"dataName": "platform",
+		"rangeMin": 0,
+		"rangeMax": 2,
+		"enumFields": {
+			"0": "PSN",
+			"1": "Xbox Live",
+			"2": "Ubisoft Connect(PC)"
+		}
+	}	
+}

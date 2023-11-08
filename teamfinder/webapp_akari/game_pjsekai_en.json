@@ -1,0 +1,19 @@
+{
+	"name": "PJSekai[EN]",
+	"hasPlayerURL": false,
+	"nDataFields": 1,
+	"data1": {
+		"dataName": "mode",
+		"rangeMin": 0,
+		"rangeMax": 1,
+		"enumFields": {
+			"0": "Co-op",
+			"1": "Versus"
+		}
+	},
+	"data2": {
+		"dataName": "rank",
+		"rangeMin": 0,
+		"rangeMax": 500000
+	}
+}
