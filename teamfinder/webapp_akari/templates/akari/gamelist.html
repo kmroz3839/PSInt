@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>[akari] games list</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'akari/style.css' %}">
+    </head>
+    <body>
+        <div class="mainPage">
+            {% include "akari/akari_navbar.html" %}
+
+            <h2>Games list</h2>
+
+            <br>
+
+            <div>
+                <table class="gamestats">
+                    <tr>
+                        <td style="background-color: transparent;">
+                            Name
+                        </td>
+                        <td style="background-color: transparent;">
+                            Players available
+                        </td>
+                    </tr>
+                    {% for x in gamelist %}
+                        <tr>
+                            <td>
+                                <a href="game/{{x.id}}">{{x.name}}</a>
+                            </td>
+                            <td class="playercount">
+                                {{x.num}}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

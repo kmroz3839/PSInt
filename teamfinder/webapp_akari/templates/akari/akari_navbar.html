@@ -1,0 +1,13 @@
+<div class="navBar">
+    {% block content %}
+    {% if user.is_authenticated %}
+    Logged in as {{ user.username }}
+    <a href="{% url 'akari_logout' %}">Log out</a>
+    {% else %}
+    Not logged in.
+    <a href="{% url 'login' %}">Log in</a>
+    {% endif %}
+    {% endblock %}
+
+    <button class="navbarbutton" onclick="location.href='/games';">Games</button>
+</div>

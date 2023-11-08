@@ -7,17 +7,24 @@
     </head>
     <body>
         <div class="mainPage">
-            <div class="navBar">
-                {% block content %}
-                {% if user.is_authenticated %}
-                Logged in as {{ user.username }}!
-                {% else %}
-                Not logged in.
-                <a href="{% url 'login' %}">Log In</a>
-                {% endif %}
-                {% endblock %}
+            {% include "akari/akari_navbar.html" %}
+
+            <h1 style="font-size: 50px; margin-bottom:0px;">Akari <span style="font-size:30px; vertical-align: top;">あかり (codename)</span></h1>
+            <h3>Team finder for gamers</h3>
+
+            <br>
+
+            <div class="leftrect">
+                <h3>Most popular games right now</h3>
+                {% include "akari/akari_gamestats.html" %}
             </div>
-            <p>Main page</p>
+
+            <div class="rightrect">
+                <h2>About あかり</h2>
+                Find people to play your favourite games with effortlessly.
+                <br>
+                Create a profile to show up in others' searches.
+            </div>
         </div>
     </body>
 </html>

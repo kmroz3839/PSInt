@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'akari/style.css' %}">
+    </head>
+    <body onload="setTimeout(function(){location.href = document.referrer;}, 1500)">
+        <div class="mainPage">
+            Logged out.
+        </div>
+    </body>
+</html>
