@@ -6,6 +6,18 @@
         <link rel="stylesheet" href="{% static 'akari/style.css' %}">
     </head>
     <body>
-        <p>Main page</p>
+        <div class="mainPage">
+            <div class="navBar">
+                {% block content %}
+                {% if user.is_authenticated %}
+                Logged in as {{ user.username }}!
+                {% else %}
+                Not logged in.
+                <a href="{% url 'login' %}">Log In</a>
+                {% endif %}
+                {% endblock %}
+            </div>
+            <p>Main page</p>
+        </div>
     </body>
 </html>

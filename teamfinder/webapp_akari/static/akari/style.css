@@ -1,3 +1,25 @@
 p {
-    font-size: 60px;
+    font-size: 16px;
+}
+
+body {
+    font-family: sans-serif;
+    color: #FFFFFF;
+    background-color: #202020;
+}
+
+.mainPage {
+    margin: auto;
+    width: max(800px, 50%);
+    background: #00000040;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-bottom: 30px;
+    padding-top: 30px;
+}
+
+.navBar {
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
 }

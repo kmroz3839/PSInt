@@ -4,6 +4,7 @@ from django.db import models
 
 class GameEntry(models.Model):
     name = models.CharField(max_length=200)
+    imageUrl = models.CharField(max_length=200, default="")
     dataConfigJson = models.CharField(max_length=2000)
 
     def __str__(self):
