@@ -18,6 +18,7 @@ class UserSubmission(models.Model):
     data2 = models.IntegerField(default=0)
     data3 = models.IntegerField(default=0)
     data4 = models.IntegerField(default=0)
+    submissiondate = models.DateTimeField(default="2000-06-06")
 
     def __str__(self):
-        return f"Game: {self.game.name}, Player name: {self.playername}, Player URL: {self.playerurl}, {self.data1}|{self.data2}|{self.data3}|{self.data4}"
+        return f"[{self.submissiondate}] Game: {self.game.name}, Player name: {self.playername}, Player URL: {self.playerurl}, {self.data1}|{self.data2}|{self.data3}|{self.data4}"

@@ -3,6 +3,7 @@ from django.template import loader
 from django.contrib import auth
 from django.http import HttpResponseRedirect, HttpResponse
 from django.db.models import Count
+import json
 
 from .models import GameEntry, UserSubmission
 
@@ -34,7 +35,23 @@ def games_list(request):
     })
 
 def game_detail(request, game_id):
-    return HttpResponse(f"[akari] Viewing details for {game_id}")
+    try:
+        game = json.loads(GameEntry.objects.filter(id=game_id).first().dataConfigJson)
+        gameUserSubmissions = UserSubmission.objects.filter(game=game_id)
+        dataFields = {x:{y:game[x][y] for y in game[x]} for x in game if x.startswith("data")}
+        #print(game)
+        print(dataFields)
+        return render(request, "akari/gamedetails.html", {
+            "recentusers": gameUserSubmissions,
+            "game": {
+                "name": game["name"],
+                "hasUserLink": game["hasPlayerURL"],
+                "nDataFields": game["nDataFields"],
+                "dataFields": dataFields
+            }
+        })
+    except RuntimeError:
+        return render(request, "akari/errorpage.html", {})
 
 def user_submit(request, game_id):
     return HttpResponse(f"[akari] Submitting user's details for {game_id}")

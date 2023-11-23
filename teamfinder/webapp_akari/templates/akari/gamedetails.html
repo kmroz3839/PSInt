@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>[akari] game details</title>
+        {% load static %}
+        {% load template_filters %}
+        <link rel="stylesheet" href="{% static 'akari/style.css' %}">
+    </head>
+    <body>
+        <div class="mainPage">
+            {% include "akari/akari_navbar.html" %}
+
+            <h1>{{game.name}}</h1>
+            <h2>Recent players added</h2>
+            <br>
+            <div>
+                <table class="gamestats">
+                    <tr>
+                        <td style="background-color: transparent;">
+                            Player name
+                        </td>
+                        {% if game.hasUserLink %}
+                        <td style="background-color: transparent;">
+                            User link
+                        </td>
+                        {% endif %}
+                        {% for x in game.dataFields %}
+                        <td style="background-color: transparent;">
+                            {{x}}
+                        </td>
+                        {% endfor %}
+                        <td style="background-color: transparent;">
+                            whatever else
+                        </td>
+                    </tr>
+                    {% for x in recentusers %}
+                        <tr>
+                            <td>
+                                {{x.playername}}
+                            </td>
+                            {% if game.hasUserLink %}
+                            <td>
+                                <a href="{{x.playerurl}}">{{x.playerurl}}</a>
+                            </td>
+                            {% endif %}
+                            {% if game.nDataFields >= 1 %}
+                            <td>
+                                {{x.data1}}
+                            </td>
+                            {% endif %} 
+                            {% if game.nDataFields >= 2 %}
+                            <td>
+                                {{x.data2}}
+                            </td>
+                            {% endif %}
+                            {% if game.nDataFields >= 3 %}
+                            <td>
+                                {{x.data3}}
+                            </td>
+                            {% endif %}
+                            {% if game.nDataFields >= 4 %}
+                            <td>
+                                {{x.data4}}
+                            </td>
+                            {% endif %}
+                            <td class="playercount">
+                                
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
