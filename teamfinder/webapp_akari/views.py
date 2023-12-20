@@ -45,12 +45,12 @@ def game_detail(request, game_id):
 
         return render(request, "akari/gamedetails.html", {
             "recentusers": gameUserSubmissions,
+            "jsonConf": game,
             "game": {
                 "name": game["name"],
                 "hasUserLink": game["hasPlayerURL"],
                 "nDataFields": game["nDataFields"],
                 "dataFields": dataFields,
-                "jsonConf": game
             }
         })
     except RuntimeError:

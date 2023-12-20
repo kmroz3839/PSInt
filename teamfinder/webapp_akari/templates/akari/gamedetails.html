@@ -45,22 +45,22 @@
                             {% endif %}
                             {% if game.nDataFields >= 1 %}
                             <td>
-                                {{x.data1}}
+                                {{x.data1|enum_data1_string:jsonConf}}
                             </td>
                             {% endif %} 
                             {% if game.nDataFields >= 2 %}
                             <td>
-                                {{x.data2|gamedetails_enum_string:}}
+                                {{x.data2|enum_data2_string:jsonConf}}
                             </td>
                             {% endif %}
                             {% if game.nDataFields >= 3 %}
                             <td>
-                                {{x.data3}}
+                                {{x.data3|enum_data3_string:jsonConf}}
                             </td>
                             {% endif %}
                             {% if game.nDataFields >= 4 %}
                             <td>
-                                {{x.data4}}
+                                {{x.data4|enum_data4_string:jsonConf}}
                             </td>
                             {% endif %}
                             <td class="playercount">
