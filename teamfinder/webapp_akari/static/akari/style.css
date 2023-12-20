@@ -34,10 +34,8 @@ a {
     vertical-align: center;
 }
 
-.navbarbutton {
-    float:right;
+.buttonmainstyle {
     padding: 5px;
-    margin: auto;
     background-color: #000000A0;
     border: 1px solid #FFFFFF40;
     border-radius: 3px;
@@ -45,12 +43,17 @@ a {
     color: white;
     transition: 200ms;
 }
-.navbarbutton:hover {
+
+.buttonmainstyle:hover {
     background-color: #FFFFFF30;
 }
-.navbarbutton:active {
+.buttonmainstyle:active {
     background-color: #FFFFFFFF;
     color: black;
+}
+
+.navbarbutton {
+    float:right;
 }
 
 .leftrect {
@@ -78,4 +81,27 @@ a {
 
 .gamestats a {
     color: white;
+}
+
+.submitform {
+    margin-left: 5%;
+    background-color: #00000030;
+    padding-left: 5%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.formtextinput {
+    background-color: transparent;
+    border: 1px solid #FFFFFF40;
+    border-radius: 3px;
+    color: white;
+}
+
+.formtexthalfwidth {
+    width: 25%;
+}
+
+.formtextfullwidth {
+    width: 50%;
 }

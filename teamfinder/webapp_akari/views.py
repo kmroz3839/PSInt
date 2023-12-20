@@ -57,4 +57,16 @@ def game_detail(request, game_id):
         return render(request, "akari/errorpage.html", {})
 
 def user_submit(request, game_id):
-    return HttpResponse(f"[akari] Submitting user's details for {game_id}")
+    if request.method == "POST":
+        return HttpResponseRedirect(f"/game/{game_id}")
+    else:
+        game = json.loads(GameEntry.objects.filter(id=game_id).first().dataConfigJson)
+        dataFields = {x:{y:game[x][y] for y in game[x]} for x in game if x.startswith("data")}
+        return render(request, "akari/gamesubmitnew.html", {
+            "game": {
+                    "name": game["name"],
+                    "hasUserLink": game["hasPlayerURL"],
+                    "nDataFields": game["nDataFields"],
+                    "dataFields": dataFields,
+                }
+        })
