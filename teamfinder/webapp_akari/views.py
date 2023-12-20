@@ -9,13 +9,10 @@ from .models import GameEntry, UserSubmission
 
 # Create your views here.
 def index(request):
-    #template = loader.get_template("akari/mainpage.html")
-    #return HttpResponse(template.render({}, request))
-    return render(request, "akari/mainpage.html", {})
+    return render(request, "teamfinder/mainpage.html", {})
 
-def akari_logout(request):
+def app_logout(request):
     auth.logout(request)
-    #return HttpResponseRedirect("/")
     return render(request, "registration/logout.html", {})
 
 class GameListEntry:
@@ -30,7 +27,7 @@ class GameListEntry:
 def games_list(request):
     gameStats = sorted([GameListEntry(num=UserSubmission.objects.filter(game_id=x.id).count(), name=x.name, id=x.id) for x in GameEntry.objects.all()], key= lambda x: x.num)[::-1]
 
-    return render(request, "akari/gamelist.html", {
+    return render(request, "teamfinder/gamelist.html", {
         "gamelist": gameStats
     })
 
@@ -43,7 +40,7 @@ def game_detail(request, game_id):
         print(dataFields)
         print(gameUserSubmissions)
 
-        return render(request, "akari/gamedetails.html", {
+        return render(request, "teamfinder/gamedetails.html", {
             "recentusers": gameUserSubmissions,
             "jsonConf": game,
             "game": {
@@ -54,7 +51,7 @@ def game_detail(request, game_id):
             }
         })
     except RuntimeError:
-        return render(request, "akari/errorpage.html", {})
+        return render(request, "teamfinder/errorpage.html", {})
 
 def user_submit(request, game_id):
     if request.method == "POST":
@@ -62,7 +59,7 @@ def user_submit(request, game_id):
     else:
         game = json.loads(GameEntry.objects.filter(id=game_id).first().dataConfigJson)
         dataFields = {x:{y:game[x][y] for y in game[x]} for x in game if x.startswith("data")}
-        return render(request, "akari/gamesubmitnew.html", {
+        return render(request, "teamfinder/gamesubmitnew.html", {
             "game": {
                     "name": game["name"],
                     "hasUserLink": game["hasPlayerURL"],

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>[app] main page</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'teamfinder/style.css' %}">
+    </head>
+    <body>
+        <div class="mainPage">
+            {% include "teamfinder/panel_navbar.html" %}
+
+            <h1>Teamfinder</h1>
+            <h3>(working title)</h3>
+
+            <br>
+
+            <div class="leftrect">
+                <h3>Most popular games right now</h3>
+                {% include "teamfinder/panel_gamestats.html" %}
+            </div>
+
+            <div class="rightrect">
+                <!--<h2>About</h2>
+                Find people to play your favourite games with effortlessly.
+                <br>
+                Create a profile to show up in others' searches.-->
+            </div>
+        </div>
+    </body>
+</html>

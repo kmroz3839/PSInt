@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>[akari] game details</title>
+        <title>[app] game details</title>
         {% load static %}
         {% load template_filters %}
-        <link rel="stylesheet" href="{% static 'akari/style.css' %}">
+        <link rel="stylesheet" href="{% static 'teamfinder/style.css' %}">
     </head>
     <body>
         <div class="mainPage">
-            {% include "akari/akari_navbar.html" %}
+            {% include "teamfinder/panel_navbar.html" %}
 
             <h1>{{game.name}}</h1>
             <button class="buttonmainstyle" onclick="location.href='submit';">Submit new...</button>
