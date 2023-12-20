@@ -41,13 +41,16 @@ def game_detail(request, game_id):
         dataFields = {x:{y:game[x][y] for y in game[x]} for x in game if x.startswith("data")}
         #print(game)
         print(dataFields)
+        print(gameUserSubmissions)
+
         return render(request, "akari/gamedetails.html", {
             "recentusers": gameUserSubmissions,
             "game": {
                 "name": game["name"],
                 "hasUserLink": game["hasPlayerURL"],
                 "nDataFields": game["nDataFields"],
-                "dataFields": dataFields
+                "dataFields": dataFields,
+                "jsonConf": game
             }
         })
     except RuntimeError:

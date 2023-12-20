@@ -26,7 +26,7 @@
                         {% endif %}
                         {% for x in game.dataFields %}
                         <td style="background-color: transparent;">
-                            {{x}}
+                            {{game.dataFields|get_item:x|get_item:'dataName'}}
                         </td>
                         {% endfor %}
                         <td style="background-color: transparent;">
@@ -50,7 +50,7 @@
                             {% endif %} 
                             {% if game.nDataFields >= 2 %}
                             <td>
-                                {{x.data2}}
+                                {{x.data2|gamedetails_enum_string:}}
                             </td>
                             {% endif %}
                             {% if game.nDataFields >= 3 %}
