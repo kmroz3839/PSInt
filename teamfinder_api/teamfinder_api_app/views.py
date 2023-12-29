@@ -34,6 +34,30 @@ class UserSubmissionListApiView(APIView):
         serializer = UserSubmissionSerializer(userSubmissions, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
+class UserSubmissionFilteredListApiView(APIView):
+    permission_classes = []
+
+    def get(self, request, gameid, filterstring: str, *args, **kwargs):
+        userSubmissions = UserSubmission.objects
+        for x in filterstring.split(';'):
+            y = x.split(':')
+            if y[0] == "data1":
+                userSubmissions = userSubmissions.filter(data1__gte=int(y[1].split('~')[0])) if '~' in y[1] else userSubmissions.filter(data1=int(y[1]))
+                userSubmissions = userSubmissions.filter(data1__lte=int(y[1].split('~')[1])) if '~' in y[1] else userSubmissions
+            elif y[0] == "data2":
+                userSubmissions = userSubmissions.filter(data2__gte=int(y[1].split('~')[0])) if '~' in y[1] else userSubmissions.filter(data2=int(y[1]))
+                userSubmissions = userSubmissions.filter(data2__lte=int(y[1].split('~')[1])) if '~' in y[1] else userSubmissions
+            elif y[0] == "data3":
+                userSubmissions = userSubmissions.filter(data3__gte=int(y[1].split('~')[0])) if '~' in y[1] else userSubmissions.filter(data3=int(y[1]))
+                userSubmissions = userSubmissions.filter(data3__lte=int(y[1].split('~')[1])) if '~' in y[1] else userSubmissions
+            elif y[0] == "data4":
+                userSubmissions = userSubmissions.filter(data4__gte=int(y[1].split('~')[0])) if '~' in y[1] else userSubmissions.filter(data4=int(y[1]))
+                userSubmissions = userSubmissions.filter(data4__lte=int(y[1].split('~')[1])) if '~' in y[1] else userSubmissions
+            elif y[0] == "name":
+                userSubmissions = userSubmissions.filter(playername__icontains=y[1])
+        serializer = UserSubmissionSerializer(userSubmissions, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
 #
 #   USER
 #
