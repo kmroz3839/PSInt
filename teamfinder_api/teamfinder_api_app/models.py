@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -11,6 +12,7 @@ class GameEntry(models.Model):
         return self.name + ", Configuration JSON:\n" + self.dataConfigJson 
 
 class UserSubmission(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=False)
     game = models.ForeignKey(GameEntry, on_delete=models.CASCADE)
     playername = models.CharField(max_length=100)
     playerurl = models.CharField(max_length=150)

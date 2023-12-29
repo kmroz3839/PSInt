@@ -19,6 +19,8 @@ from django.contrib.auth.models import User
 from django.urls import path, include
 from rest_framework import routers, serializers, viewsets
 
+from teamfinder_api_app import urls as teamfinder_urls
+
 # Serializers define the API representation.
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -37,5 +39,6 @@ router.register(r'users', UserViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls'))
+    path('api-auth/', include('rest_framework.urls')),
+    path('teamfinder/', include(teamfinder_urls))
 ]
