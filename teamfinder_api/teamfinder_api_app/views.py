@@ -19,6 +19,17 @@ class GameEntryListApiView(APIView):
         serializer = GameEntrySerializer(gameEntries, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
+class GameEntryRankingListApiView(APIView):
+    permission_classes = []
+
+    def get(self, request, *args, **kwargs):
+        d = {}
+        for x in GameEntry.objects.all():
+            d[x.id] = UserSubmission.objects.filter(game=x.id).count()
+        d = dict(reversed(sorted(d.items(), key=lambda i:i[1])))
+        #serializer = GameEntrySerializer(gameEntries, many=True)
+        return Response(d, status=status.HTTP_200_OK)
+    
 class GameEntryDataConfigApiView(APIView):
     permission_classes = []
 
@@ -85,12 +96,23 @@ class UserSubmissionUserListApiView(APIView):
             'data4': request.data.get('data4'),
             'submissiondate': datetime.datetime.now()
         }
+        for x in range(1,5):
+            if newSubmission[f'data{x}'] is None:
+                newSubmission[f'data{x}'] = 0
         serializer = UserSubmissionSerializer(data=newSubmission)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UserOwnSubmissionsApiView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        userSubmissions = UserSubmission.objects.filter(user=request.user.id)
+        serializer = UserSubmissionSerializer(userSubmissions, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 #
 #   ADMIN

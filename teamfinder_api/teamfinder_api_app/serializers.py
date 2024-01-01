@@ -10,4 +10,4 @@ class GameEntrySerializer(serializers.ModelSerializer):
 class UserSubmissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserSubmission
-        fields = ['game', 'playername', 'playerurl', 'data1', 'data2', 'data3', 'data4', 'submissiondate']
+        fields = ['user', 'game', 'playername', 'playerurl', 'data1', 'data2', 'data3', 'data4', 'submissiondate']
