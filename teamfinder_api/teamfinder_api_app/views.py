@@ -1,11 +1,12 @@
 import datetime
 from django.shortcuts import render
+from django.contrib.auth.models import User
 from rest_framework import status, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .models import GameEntry, UserSubmission
-from .serializers import GameEntrySerializer, UserSubmissionSerializer
+from .models import GameEntry, UserSubmission, UserReport
+from .serializers import GameEntrySerializer, UserSubmissionSerializer, UserReportSerializer
 
 import json
 
@@ -114,6 +115,28 @@ class UserOwnSubmissionsApiView(APIView):
         serializer = UserSubmissionSerializer(userSubmissions, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+class UserReportPlayerApiView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        if request.data.get('user') is not None:
+            if User.objects.filter(id=request.data.get('user')).count() != 0:
+                newReport = {
+                    'reportinguser': request.user.id,
+                    'targetuser': request.data.get('user'),
+                    'details': request.data.get('description'),
+                }
+                serializer = UserReportSerializer(data=newReport)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                else:
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response({'error': 'user does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({'error': 'required parameter: "user"'}, status=status.HTTP_400_BAD_REQUEST)
+
 #
 #   ADMIN
 #
@@ -163,3 +186,28 @@ class GameEntryDetailsAdminListApiView(APIView):
         target = GameEntry.objects.get(id=gameid)
         target.delete()
         return Response(status=status.HTTP_200_OK)
+    
+class UserReportsListAdminApiView(APIView):
+    permission_classes = [permissions.IsAdminUser]
+
+    def get(self, request, *args, **kwargs):
+        userReports = UserReport.objects.all()
+        serializer = UserReportSerializer(userReports, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        if request.data.get('name') is not None:
+            usr = User.objects.filter(username=request.data.get('name'))
+            if usr.count() != 0:
+                usrf = UserReport.objects.filter(targetuser=usr.first().id)
+                serializer = UserReportSerializer(usrf, many=True)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response({'error': 'user not found'}, status=status.HTTP_400_BAD_REQUEST)
+        elif request.data.get('id') is not None:
+            usr = UserReport.objects.filter(targetuser=request.data.get('id'))
+            serializer = UserReportSerializer(usr, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({}, status=status.HTTP_400_BAD_REQUEST)
+                

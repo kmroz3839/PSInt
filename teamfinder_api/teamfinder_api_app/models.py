@@ -35,9 +35,12 @@ class UsersInTeams(models.Model):
     joinDate = models.DateTimeField(default="2000-06-06")
 
 class UserReport(models.Model):
-    targetUser = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
-    reportingUser = models.ForeignKey(User, related_name='reportingUser', on_delete=models.SET_NULL, null=True)
+    targetuser = models.ForeignKey(User, related_name='targetuser', on_delete=models.CASCADE, null=False)
+    reportinguser = models.ForeignKey(User, related_name='reportinguser', on_delete=models.SET_NULL, null=True)
     details = models.CharField(max_length=2000)
+
+    def __str__(self):
+        return f'User report for {self.targetuser.username} from {self.reportinguser.username}: {self.details}'
 
 class GameSuggestion(models.Model):
     name = models.CharField(max_length=100)
