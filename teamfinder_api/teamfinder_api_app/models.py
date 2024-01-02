@@ -45,3 +45,4 @@ class UserReport(models.Model):
 class GameSuggestion(models.Model):
     name = models.CharField(max_length=100)
     sentByUser = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    suggestionCount = models.IntegerField(default=1)

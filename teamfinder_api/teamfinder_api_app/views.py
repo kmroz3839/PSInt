@@ -5,8 +5,8 @@ from rest_framework import status, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .models import GameEntry, UserSubmission, UserReport
-from .serializers import GameEntrySerializer, UserSubmissionSerializer, UserReportSerializer
+from .models import GameEntry, UserSubmission, UserReport, GameSuggestion
+from .serializers import GameEntrySerializer, UserSubmissionSerializer, UserReportSerializer, GameSuggestionSerializer
 
 import json
 
@@ -137,6 +137,38 @@ class UserReportPlayerApiView(APIView):
         else:
             return Response({'error': 'required parameter: "user"'}, status=status.HTTP_400_BAD_REQUEST)
 
+class UserSuggestGameApiView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        if request.data.get('name') is not None:
+            currentObjs = GameSuggestion.objects.filter(name=request.data.get('name'))
+            if currentObjs.count() == 0:
+                newSuggestion = {
+                    'name': request.data.get('name'),
+                    'sentByUser': request.user.id,
+                }
+                serializer = GameSuggestionSerializer(data=newSuggestion)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                else:
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                obj = currentObjs.first()
+                updateObj = {
+                    'suggestionCount': obj.suggestionCount+1
+                }
+                serializer = GameSuggestionSerializer(instance=obj, data=updateObj, partial=True)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data, status=status.HTTP_200_OK)
+                else:
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                pass
+        else:
+            return Response({'error': 'required parameter: "name"'}, status=status.HTTP_400_BAD_REQUEST)
+
 #
 #   ADMIN
 #
@@ -210,4 +242,13 @@ class UserReportsListAdminApiView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
+
+    
+class GameSuggestionsListAdminApiView(APIView):
+    permission_classes = [permissions.IsAdminUser]
+
+    def get(self, request, *args, **kwargs):
+        objs = GameSuggestion.objects.all()
+        serializer = GameSuggestionSerializer(objs, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
                 

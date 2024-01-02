@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import UserSubmission, GameEntry, UserReport
+from .models import UserSubmission, GameEntry, UserReport, GameSuggestion
 
 class GameEntrySerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,3 +16,8 @@ class UserReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserReport
         fields = ['targetuser', 'reportinguser', 'details']
+
+class GameSuggestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GameSuggestion
+        fields = ['name', 'sentByUser', 'suggestionCount']
