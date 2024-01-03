@@ -21,7 +21,7 @@ urlpatterns = [
     path('user/profile/teams/', UserInTeamsListAPIView.as_view()),
     path('user/profile/teams/join/', UserJoinTeamAPIView.as_view()),
     path('user/profile/teams/leave/<int:targetteam>/', UserRemoveFromTeamAPIView.as_view()),
-    path('user/profile/teams/create', UserCreateTeamAPIView.as_view()),
+    path('user/profile/teams/create/', UserCreateTeamAPIView.as_view()),
 ]
 
 urlpatterns += router.urls

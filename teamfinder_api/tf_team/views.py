@@ -5,8 +5,11 @@ from rest_framework import status, permissions, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
+from teamfinder_api_app.models import GameEntry
+from teamfinder_api_app.serializers import GameEntrySerializer
+
 from .models import Team, UsersInTeams
-from .serializers import TeamSerializer, UserInTeamSerializer
+from .serializers import TeamSerializer, UserInTeamSerializer, UserInTeamViewableSerializer
 
 # Create your views here.
 
@@ -26,8 +29,27 @@ class UserInTeamsListAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     def get(self, request, *args, **kwargs):
         objs = UsersInTeams.objects.filter(user=request.user.id)
-        serializer = UserInTeamSerializer(objs, many=True)
+        serializer = UserInTeamViewableSerializer(objs, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self,request, *args, **kwargs):
+        try:
+            editTeamEntry = Team.objects.get(id=request.data.get('team'))
+            newMainGame = GameEntry.objects.get(id=request.data.get('game'))
+            updateTeamEntry = {
+                'mainGame': newMainGame.id
+            }
+            if editTeamEntry.owner.id == request.user.id:
+                serializer = TeamSerializer(instance=editTeamEntry, data=updateTeamEntry, partial=True)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data, status=status.HTTP_200_OK)
+                else:
+                    return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            else:
+                return Response({'error': f'not authorized to edit team {editTeamEntry.id} ({editTeamEntry.owner.id})'}, status=status.HTTP_400_BAD_REQUEST)
+        except FileNotFoundError:
+            return Response({'error': 'specified team or game does not exist'}, status=status.HTTP_400_BAD_REQUEST)
 
 class UserJoinTeamAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]

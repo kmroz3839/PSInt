@@ -1,12 +1,12 @@
 from django.db import models
-
 from django.contrib.auth.models import User
 
-# Create your models here.
+from teamfinder_api_app.models import GameEntry
 
 class Team(models.Model):
     name = models.CharField(max_length=100)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
+    mainGame = models.ForeignKey(GameEntry, on_delete=models.SET_NULL, null=True, default=None)
 
 class UsersInTeams(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
