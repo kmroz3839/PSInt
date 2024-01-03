@@ -9,7 +9,7 @@ from teamfinder_api_app.models import GameEntry
 from teamfinder_api_app.serializers import GameEntrySerializer
 
 from .models import Team, UsersInTeams
-from .serializers import TeamSerializer, UserInTeamSerializer, UserInTeamViewableSerializer
+from .serializers import TeamSerializer, UserInTeamSerializer, UserInTeamViewableSerializer, UserInTeamListViewableSerializer
 
 # Create your views here.
 
@@ -19,6 +19,14 @@ class TeamsListAPIView(APIView):
     def get(self, request, *args, **kwargs):
         gameEntries = Team.objects.all()
         serializer = TeamSerializer(gameEntries, context={'request': request}, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class TeamMembersListAPIView(APIView):
+    permission_classes = []
+
+    def get(self, request, targetteam, *args, **kwargs):
+        usrobjs = UsersInTeams.objects.filter(team=targetteam)
+        serializer = UserInTeamListViewableSerializer(usrobjs, context={'request': request}, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 #
@@ -48,7 +56,7 @@ class UserInTeamsListAPIView(APIView):
                     return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             else:
                 return Response({'error': f'not authorized to edit team {editTeamEntry.id} ({editTeamEntry.owner.id})'}, status=status.HTTP_400_BAD_REQUEST)
-        except FileNotFoundError:
+        except:
             return Response({'error': 'specified team or game does not exist'}, status=status.HTTP_400_BAD_REQUEST)
 
 class UserJoinTeamAPIView(APIView):

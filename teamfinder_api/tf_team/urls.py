@@ -5,6 +5,7 @@ from rest_framework import routers
 from .views import (
     TeamsListAPIView,
     AdminTeamsView,
+    TeamMembersListAPIView,
     UserInTeamsListAPIView,
     UserRemoveFromTeamAPIView,
     UserCreateTeamAPIView,
@@ -18,6 +19,7 @@ router.register('admin/usersinteams', AdminUsersInTeamsView)
 
 urlpatterns = [
     path('public/teams/', TeamsListAPIView.as_view()),
+    path('public/teams/<int:targetteam>/members/', TeamMembersListAPIView.as_view()),
     path('user/profile/teams/', UserInTeamsListAPIView.as_view()),
     path('user/profile/teams/join/', UserJoinTeamAPIView.as_view()),
     path('user/profile/teams/leave/<int:targetteam>/', UserRemoveFromTeamAPIView.as_view()),
