@@ -126,7 +126,7 @@ class UserReportPlayerApiView(APIView):
                 newReport = {
                     'reportinguser': request.user.id,
                     'targetuser': request.data.get('user'),
-                    'details': request.data.get('description'),
+                    'details': request.data.get('details'),
                 }
                 serializer = UserReportSerializer(data=newReport)
                 if serializer.is_valid():
