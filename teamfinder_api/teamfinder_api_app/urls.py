@@ -1,9 +1,14 @@
 from django.urls import path, include
+from rest_framework import routers
+
+from tf_team import urls as tf_team_urls
 
 from .views import (
+    AdminGameEntryViewSet,
+    AdminUserReportsViewSet,
+
     GameEntryListApiView, 
     GameEntryRankingListApiView, 
-    GameEntryAdminListApiView, 
     UserSubmissionUserListApiView, 
     UserOwnSubmissionsApiView, 
     UserSubmissionFilteredListApiView, 
@@ -13,8 +18,11 @@ from .views import (
     GameSuggestionsListAdminApiView,
     UserSubmissionListApiView,
     UserSuggestGameApiView,
-    UserReportsListAdminApiView
 )
+
+router = routers.DefaultRouter()
+router.register('admin/games', AdminGameEntryViewSet)
+router.register('admin/reports', AdminUserReportsViewSet)
 
 urlpatterns = [
     path('public/games/', GameEntryListApiView.as_view()),
@@ -26,8 +34,10 @@ urlpatterns = [
     path('user/submit/<int:gameid>/', UserSubmissionUserListApiView.as_view()),
     path('user/report/', UserReportPlayerApiView.as_view()),
     path('user/suggestgame/', UserSuggestGameApiView.as_view()),
-    path('admin/games/', GameEntryAdminListApiView.as_view()),
     path('admin/games/<int:gameid>/', GameEntryDetailsAdminListApiView.as_view()),
-    path('admin/reports/', UserReportsListAdminApiView.as_view()),
     path('admin/suggestions/', GameSuggestionsListAdminApiView.as_view()),
+
+    path('', include(tf_team_urls))
 ]
+
+urlpatterns += router.urls

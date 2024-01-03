@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'teamfinder_api_app',
+    'tf_team',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

@@ -1,7 +1,7 @@
 import datetime
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from rest_framework import status, permissions
+from rest_framework import status, permissions, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -165,7 +165,6 @@ class UserSuggestGameApiView(APIView):
                     return Response(serializer.data, status=status.HTTP_200_OK)
                 else:
                     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-                pass
         else:
             return Response({'error': 'required parameter: "name"'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -173,26 +172,16 @@ class UserSuggestGameApiView(APIView):
 #   ADMIN
 #
 
-class GameEntryAdminListApiView(APIView):
+class AdminGameEntryViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser]
-
-    def get(self, request, *args, **kwargs):
-        gameEntries = GameEntry.objects.all()
-        serializer = GameEntrySerializer(gameEntries, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def post(self, request, *args, **kwargs):
-        newGameEntry = {
-            'name': request.data.get('name'),
-            'dataConfigJson': request.data.get('dataConfigJson')
-        }
-        serializer = GameEntrySerializer(data=newGameEntry)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    queryset = GameEntry.objects.all()
+    serializer_class = GameEntrySerializer
         
+class AdminUserReportsViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAdminUser]
+    queryset = UserReport.objects.all()
+    serializer_class = UserReportSerializer
+
 class GameEntryDetailsAdminListApiView(APIView):
     permission_classes = [permissions.IsAdminUser]
 
@@ -218,31 +207,6 @@ class GameEntryDetailsAdminListApiView(APIView):
         target = GameEntry.objects.get(id=gameid)
         target.delete()
         return Response(status=status.HTTP_200_OK)
-    
-class UserReportsListAdminApiView(APIView):
-    permission_classes = [permissions.IsAdminUser]
-
-    def get(self, request, *args, **kwargs):
-        userReports = UserReport.objects.all()
-        serializer = UserReportSerializer(userReports, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def post(self, request, *args, **kwargs):
-        if request.data.get('name') is not None:
-            usr = User.objects.filter(username=request.data.get('name'))
-            if usr.count() != 0:
-                usrf = UserReport.objects.filter(targetuser=usr.first().id)
-                serializer = UserReportSerializer(usrf, many=True)
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            else:
-                return Response({'error': 'user not found'}, status=status.HTTP_400_BAD_REQUEST)
-        elif request.data.get('id') is not None:
-            usr = UserReport.objects.filter(targetuser=request.data.get('id'))
-            serializer = UserReportSerializer(usr, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response({}, status=status.HTTP_400_BAD_REQUEST)
-
     
 class GameSuggestionsListAdminApiView(APIView):
     permission_classes = [permissions.IsAdminUser]
