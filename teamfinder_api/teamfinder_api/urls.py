@@ -21,11 +21,7 @@ from rest_framework import routers, serializers, viewsets
 
 from teamfinder_api_app import urls as teamfinder_urls
 
-# Serializers define the API representation.
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = ['id', 'url', 'username', 'email', 'is_staff']
+from .serializers import UserSerializer
 
 # ViewSets define the view behavior.
 class UserViewSet(viewsets.ModelViewSet):
