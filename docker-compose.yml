@@ -6,10 +6,11 @@ services:
       context: .
     ports:
     - "8000:8000"
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
-    - ./app:/app
+    - ./teamfinder_api:/app
     environment:
-      - DB_HOST=db
+      - DB_HOST=127.0.0.1
       - DB_NAME=app
       - DB_USER=postgres
       - DB_PASSWORD=pass
