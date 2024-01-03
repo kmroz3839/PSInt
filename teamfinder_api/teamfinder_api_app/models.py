@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from tf_auth.models import TFUser
+
 # Create your models here.
 
 class GameEntry(models.Model):
@@ -12,7 +14,7 @@ class GameEntry(models.Model):
         return self.name + ", Configuration JSON:\n" + self.dataConfigJson 
 
 class UserSubmission(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=False)
+    user = models.ForeignKey(TFUser, on_delete=models.CASCADE, blank=True, null=False)
     game = models.ForeignKey(GameEntry, on_delete=models.CASCADE)
     playername = models.CharField(max_length=100)
     playerurl = models.CharField(max_length=150)
@@ -26,8 +28,8 @@ class UserSubmission(models.Model):
         return f"[{self.submissiondate}] Game: {self.game.name}, Player name: {self.playername}, Player URL: {self.playerurl}, {self.data1}|{self.data2}|{self.data3}|{self.data4}"
 
 class UserReport(models.Model):
-    targetuser = models.ForeignKey(User, related_name='targetuser', on_delete=models.CASCADE, null=False)
-    reportinguser = models.ForeignKey(User, related_name='reportinguser', on_delete=models.SET_NULL, null=True)
+    targetuser = models.ForeignKey(TFUser, related_name='targetuser', on_delete=models.CASCADE, null=False)
+    reportinguser = models.ForeignKey(TFUser, related_name='reportinguser', on_delete=models.SET_NULL, null=True)
     details = models.CharField(max_length=2000)
 
     def __str__(self):
@@ -35,5 +37,5 @@ class UserReport(models.Model):
 
 class GameSuggestion(models.Model):
     name = models.CharField(max_length=100)
-    sentByUser = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    sentByUser = models.ForeignKey(TFUser, on_delete=models.SET_NULL, null=True)
     suggestionCount = models.IntegerField(default=1)

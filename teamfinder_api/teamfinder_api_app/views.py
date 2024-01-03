@@ -5,6 +5,8 @@ from rest_framework import status, permissions, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
+from tf_auth.models import TFUser
+
 from .models import GameEntry, UserSubmission, UserReport, GameSuggestion
 from .serializers import GameEntrySerializer, UserSubmissionSerializer, UserReportSerializer, GameSuggestionSerializer
 
@@ -120,7 +122,7 @@ class UserReportPlayerApiView(APIView):
 
     def post(self, request, *args, **kwargs):
         if request.data.get('user') is not None:
-            if User.objects.filter(id=request.data.get('user')).count() != 0:
+            if TFUser.objects.filter(id=request.data.get('user')).count() != 0:
                 newReport = {
                     'reportinguser': request.user.id,
                     'targetuser': request.data.get('user'),

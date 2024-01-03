@@ -21,11 +21,13 @@ from rest_framework import routers, serializers, viewsets
 
 from teamfinder_api_app import urls as teamfinder_urls
 
+from tf_auth.models import TFUser
+
 from .serializers import UserSerializer
 
 # ViewSets define the view behavior.
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+    queryset = TFUser.objects.all()
     serializer_class = UserSerializer
 
 # Routers provide an easy way of automatically determining the URL conf.

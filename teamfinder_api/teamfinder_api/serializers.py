@@ -1,8 +1,8 @@
 from rest_framework import serializers
 
-from django.contrib.auth.models import User
+from tf_auth.models import TFUser
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = User
+        model = TFUser
         fields = ['id', 'url', 'username', 'email', 'is_staff']

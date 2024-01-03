@@ -2,6 +2,7 @@ from django.urls import path, include
 from rest_framework import routers
 
 from tf_team import urls as tf_team_urls
+from tf_auth import urls as tf_auth_urls
 
 from .views import (
     AdminGameEntryViewSet,
@@ -37,7 +38,8 @@ urlpatterns = [
     path('admin/games/<int:gameid>/', GameEntryDetailsAdminListApiView.as_view()),
     path('admin/suggestions/', GameSuggestionsListAdminApiView.as_view()),
 
-    path('', include(tf_team_urls))
+    path('', include(tf_team_urls)),
+    path('auth/', include(tf_auth_urls)),
 ]
 
 urlpatterns += router.urls
