@@ -88,11 +88,14 @@ class UserRemoveFromTeamAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     def delete(self, request, targetteam, *args, **kwargs):
         if targetteam is not None:
-            obj = UsersInTeams.objects.get(user=request.user.id, team=targetteam)
-            if UsersInTeams.objects.filter(team=targetteam).count() == 1:
-                Team.objects.get(id=targetteam).delete()
-            obj.delete()
-            return Response({}, status=status.HTTP_200_OK)
+            try:
+                obj = UsersInTeams.objects.get(user=request.user.id, team=targetteam)
+                if UsersInTeams.objects.filter(team=targetteam).count() == 1:
+                    Team.objects.get(id=targetteam).delete()
+                obj.delete()
+                return Response({}, status=status.HTTP_200_OK)
+            except:
+                return Response({'error': 'You do not belong to this team'}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({'error': 'required parameter: "teamid"'}, status=status.HTTP_400_BAD_REQUEST)
 
