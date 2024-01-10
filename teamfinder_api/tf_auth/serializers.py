@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model, authenticate
 from rest_framework import serializers
 from django.utils.translation import gettext as _
 
+from .models import TFUser
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,6 +31,10 @@ class UserSerializer(serializers.ModelSerializer):
 
         return user
 
+class UserPublicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TFUser
+        fields = ['email', 'name']
 
 class AuthTokenSerializer(serializers.Serializer):
     email = serializers.CharField()

@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from tf_auth.models import TFUser
+from tf_auth.serializers import UserPublicSerializer
 
 from .models import GameEntry, UserSubmission, UserReport, GameSuggestion
 from .serializers import GameEntrySerializer, UserSubmissionSerializer, UserReportSerializer, GameSuggestionSerializer
@@ -75,6 +76,18 @@ class UserSubmissionFilteredListApiView(APIView):
         except:
             return Response({'error': 'Invalid filter string'}, status=status.HTTP_400_BAD_REQUEST)
     
+class TFUserApiView(APIView):
+    permission_classes = []
+
+    def get(self, request, uid, *args, **kwargs):
+        try:
+            user = TFUser.objects.get(id=uid)
+            serializer = UserPublicSerializer(user, many=False)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except:
+            return Response({'error': 'Error finding user.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
 #
 #   USER
 #

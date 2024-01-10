@@ -17,6 +17,7 @@ from .views import (
     GameEntryDetailsAdminListApiView, 
     GameEntryDataConfigApiView, 
     GameSuggestionsListAdminApiView,
+    TFUserApiView,
     UserSubmissionListApiView,
     UserSuggestGameApiView,
 )
@@ -31,6 +32,7 @@ urlpatterns = [
     path('public/games/<int:gameid>/submissions/<str:filterstring>/', UserSubmissionFilteredListApiView.as_view()),
     path('public/games/<int:gameid>/dataconfig/', GameEntryDataConfigApiView.as_view()),
     path('public/gamesranking/', GameEntryRankingListApiView.as_view()),
+    path('public/user/<int:uid>/', TFUserApiView.as_view()),
     path('user/profile/submissions', UserOwnSubmissionsApiView.as_view()),
     path('user/submit/<int:gameid>/', UserSubmissionUserListApiView.as_view()),
     path('user/report/', UserReportPlayerApiView.as_view()),
