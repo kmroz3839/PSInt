@@ -21,6 +21,11 @@ class TeamsListAPIView(APIView):
         serializer = TeamSerializer(gameEntries, context={'request': request}, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    def post(self, request, *args, **kwargs):
+        gameEntries = Team.objects.all(mainGame=request.data.get("game"))
+        serializer = TeamSerializer(gameEntries, context={'request': request}, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 class TeamMembersListAPIView(APIView):
     permission_classes = []
 
